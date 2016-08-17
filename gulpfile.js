@@ -17,7 +17,7 @@ gulp.task('bower-scripts', ['clean:scripts'], function () {
     .pipe(gulp.dest('assets/tmp'));
 });
 
-gulp.task('sass', function(){
+gulp.task('sass', ['clean'], function(){
   return gulp.src('assets/styles/main.scss')
     .pipe(plugins.plumber({
       errorHandler: plugins.notify.onError("Error: <%= error.message %>")
@@ -35,7 +35,7 @@ gulp.task('sass', function(){
     }))
 });
 
-gulp.task('scripts', ['bower-scripts'], function(){
+gulp.task('scripts', ['bower-scripts', 'clean'], function(){
   return gulp.src(['assets/tmp/bower.js', 'assets/scripts/main.js'])
     .pipe(plugins.plumber({
       errorHandler: plugins.notify.onError("Error: <%= error.message %>")
