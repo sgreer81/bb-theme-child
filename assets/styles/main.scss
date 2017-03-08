@@ -1,10 +1,5 @@
+@import "../../node_modules/include-media/dist/_include-media.scss";
 @import "scss/variables";
-
-// Automatically injected Bower dependencies via wiredep (never manually edit this block)
-// bower:scss
-@import "../../bower_components/include-media/dist/_include-media.scss";
-// endbower
-
 @import "scss/global";
 @import "scss/header";
 @import "scss/pages";

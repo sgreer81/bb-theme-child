@@ -1,24 +1,22 @@
 var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var browserSync = require('browser-sync').create();
-var wiredep = require('gulp-wiredep')
-var del = require('del');
+    plugins = require('gulp-load-plugins')(),
+    browserSync = require('browser-sync').create(),
+    del = require('del');
+    
 
-gulp.task('bower-styles', function () {
-  return gulp.src('assets/styles/main.scss')
-    .pipe(wiredep())
-    .pipe(gulp.dest('assets/styles'));
-});
+var styles =  [
+                './assets/styles/main.scss'
+              ]
 
-gulp.task('bower-scripts', ['clean:scripts'], function () {
-  return gulp.src('./bower.json')
-    .pipe(plugins.mainBowerFiles('**/*.js'))
-    .pipe(plugins.concat('bower.js'))
-    .pipe(gulp.dest('assets/tmp'));
-});
+var scripts = [
+                './assets/scripts/main.js'
+              ]
 
-gulp.task('sass', ['clean'], function(){
-  return gulp.src('assets/styles/main.scss')
+var devUrl = 'example.dev';
+
+
+gulp.task('sass', function(){
+  return gulp.src(styles)
     .pipe(plugins.plumber({
       errorHandler: plugins.notify.onError("Error: <%= error.message %>")
     }))
@@ -35,11 +33,8 @@ gulp.task('sass', ['clean'], function(){
     }))
 });
 
-gulp.task('scripts', ['bower-scripts', 'clean'], function(){
-  return gulp.src(['assets/tmp/bower.js', 'assets/scripts/main.js'])
-    .pipe(plugins.plumber({
-      errorHandler: plugins.notify.onError("Error: <%= error.message %>")
-    }))
+gulp.task('scripts', function(){
+  return gulp.src(scripts)
     .pipe(plugins.concat('main.js'))
     .pipe(plugins.minify({
       ext:{
@@ -47,16 +42,24 @@ gulp.task('scripts', ['bower-scripts', 'clean'], function(){
       },
       noSource: true
     }))
+    .pipe(plugins.jshint())
+    .pipe(plugins.plumber({
+      errorHandler: plugins.notify.onError("Error: <%= error.message %>")
+    }))
     .pipe(gulp.dest('dist/scripts'))
     .pipe(browserSync.reload({
       stream: true
     }))
 });
 
-gulp.task('clean:scripts', function () {
-  return del([
-    'assets/tmp/bower.js',
-  ]);
+gulp.task('fonts', function(){
+  return gulp.src([
+      './assets/fonts/*'
+    ])
+    .pipe(gulp.dest('dist/fonts'))
+    .pipe(browserSync.reload({
+      stream: true
+    }))
 });
 
 gulp.task('clean', function () {
@@ -65,18 +68,20 @@ gulp.task('clean', function () {
   ]);
 });
 
-gulp.task('browserSync', function() {
-  browserSync.init({
-    proxy: "http://beaver-child.dev",
-    host: "beaver-child.dev",
-    open: 'external',
-    files: "*.php"
-  });
-})
+gulp.task('watch', ['sass', 'scripts', 'fonts'], function() {
 
-gulp.task('watch', ['browserSync', 'bower-styles', 'bower-scripts', 'sass', 'scripts'], function (){
-  gulp.watch('assets/styles/scss/*.scss', ['sass']);
-  gulp.watch('assets/scripts/*.js', ['scripts']);
+  browserSync.init({
+    proxy: "http://" + devUrl,
+    host: devUrl,
+    files: "*.html"
+  });
+
+  gulp.watch('./assets/styles/*.scss', ['sass']);
+  gulp.watch('./assets/styles/**/*.scss', ['sass']);
+  gulp.watch('./assets/scripts/*.js', ['scripts']);
+  gulp.watch('./app.js', ['bundle']);
+  gulp.watch('./*.html').on('change', browserSync.reload);
+  gulp.watch('./views/*.html').on('change', browserSync.reload);
 });
 
-gulp.task('default', ['clean', 'bower-styles', 'bower-scripts', 'sass', 'scripts']);
+gulp.task('default', ['sass', 'scripts', 'fonts']);
