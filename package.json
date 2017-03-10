@@ -1,13 +1,17 @@
 {
-  "name": "beaver-builder-child-theme",
+  "name": "bb-theme-child",
   "version": "1.0.0",
-  "description": "",
-  "main": "wp-admin.js",
+  "description": "Beaver Builder Child theme with Gulp",
+  "author": "Stephen Greer <info@stephengreer.me>",
+  "homepage": "https://stephengreer.me/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stephengreer08/bb-theme-child.git"
+  },
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Stephen Greer",
-  "license": "ISC",
   "devDependencies": {
     "browser-sync": "^2.14.0",
     "del": "^2.2.2",

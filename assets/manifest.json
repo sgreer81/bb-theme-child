@@ -1,0 +1,13 @@
+{
+  "assets": {
+    "styles": [
+      "./assets/styles/main.scss"
+    ],
+    "scripts": [
+      "./assets/scripts/main.js"
+    ]
+  },
+  "config": {
+    "devUrl": "example.dev"
+  }
+}

@@ -36,3 +36,11 @@ You now have all the necessary dependencies to run the build process.
 
 * `gulp` — Compile and optimize the files in your assets directory
 * `gulp watch` — Compile assets when file changes are made
+
+### Manage assets
+
+Assets are managed in `assets/manifest.json`. Add your scss and js assets to be passed to Gulp. Please note, multiple can be added. This is where you would include any assets from your `node_modules` directory pulled in using NPM.
+
+This is also where you can add your local url for BrowserSync.
+
+Any fonts that are added to the `assets/fonts` directory will be bundled into the `dist` directory.

@@ -1,22 +1,14 @@
 var gulp = require('gulp');
     plugins = require('gulp-load-plugins')(),
     browserSync = require('browser-sync').create(),
-    del = require('del');
-    
+    del = require('del'),
+    manifest = require('./assets/manifest.json');
 
-var styles =  [
-                './assets/styles/main.scss'
-              ]
-
-var scripts = [
-                './assets/scripts/main.js'
-              ]
-
-var devUrl = 'example.dev';
-
+var assets = manifest.assets;
+var config = manifest.config;
 
 gulp.task('sass', function(){
-  return gulp.src(styles)
+  return gulp.src(assets.styles)
     .pipe(plugins.plumber({
       errorHandler: plugins.notify.onError("Error: <%= error.message %>")
     }))
@@ -34,7 +26,7 @@ gulp.task('sass', function(){
 });
 
 gulp.task('scripts', function(){
-  return gulp.src(scripts)
+  return gulp.src(assets.scripts)
     .pipe(plugins.concat('main.js'))
     .pipe(plugins.minify({
       ext:{
@@ -71,17 +63,15 @@ gulp.task('clean', function () {
 gulp.task('watch', ['sass', 'scripts', 'fonts'], function() {
 
   browserSync.init({
-    proxy: "http://" + devUrl,
-    host: devUrl,
-    files: "*.html"
+    proxy: "http://" + config.devUrl,
+    host: config.devUrl,
+    files: "*.php"
   });
 
   gulp.watch('./assets/styles/*.scss', ['sass']);
   gulp.watch('./assets/styles/**/*.scss', ['sass']);
   gulp.watch('./assets/scripts/*.js', ['scripts']);
-  gulp.watch('./app.js', ['bundle']);
-  gulp.watch('./*.html').on('change', browserSync.reload);
-  gulp.watch('./views/*.html').on('change', browserSync.reload);
+  gulp.watch('./*.php').on('change', browserSync.reload);
 });
 
 gulp.task('default', ['sass', 'scripts', 'fonts']);
