@@ -1,0 +1,13 @@
+{
+    "name": "stephengreer08/bb-theme-child",
+    "description": "Beaver Builder Child theme with Gulp",
+    "type": "wordpress-theme",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stephen Greer",
+            "email": "info@stephengreer.me"
+        }
+    ],
+    "require": {}
+}
